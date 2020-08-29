@@ -14,12 +14,16 @@ application {
    mainClass  = 'com.github.ennoxhd.empty.java.app.EmptyJavaProject'
 }
 
+run {
+//   standardInput = System.in
+}
+
 repositories {
    mavenCentral()
 }
 
 dependencies {
-   
+
 }
 
 task debug (type: Exec) {
