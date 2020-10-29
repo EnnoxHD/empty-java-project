@@ -1,12 +1,15 @@
 plugins {
    id 'java'
    id 'application'
+//   id 'org.openjfx.javafxplugin' version '0.0.9'
+//   id 'java-library'
 }
 
 java {
-   sourceCompatibility = JavaVersion.VERSION_14
-   targetCompatibility = JavaVersion.VERSION_14
    modularity.inferModulePath = true
+   toolchain {
+      languageVersion = JavaLanguageVersion.of(15)
+   }
 }
 
 application {
@@ -14,27 +17,34 @@ application {
    mainClass  = 'com.github.ennoxhd.empty.java.app.EmptyJavaProject'
 }
 
+//javafx {
+//    version = '15'
+//    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+//}
+
 run {
 //   standardInput = System.in
 }
 
 repositories {
-   mavenCentral()
+//   mavenCentral()
 }
 
 dependencies {
-
+//   implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 }
 
 task debug (type: Exec) {
    group = 'application'
-   description = 'Runs this project as a JVM application with debugging enabled'
-   def baseCommand = ['run', '--debug-jvm']
-   doFirst {
-      if (System.properties['os.name'].toLowerCase().contains('windows')) {
-         commandLine = ['cmd', '/c', 'gradlew.bat'] + baseCommand
-      } else {
-         commandLine = ['sh', 'gradlew'] + baseCommand
-      }
+   description = 'Runs this project as a JVM application with debugging enabled (add program arguments with -Pargs="...")'
+
+   def baseCommand = 'run --debug-jvm'
+   if(project.hasProperty('args')) {
+      baseCommand += ' --args="' + project.getProperty('args') + '"'
+   }
+   if (System.properties['os.name'].toLowerCase().contains('windows')) {
+      commandLine = ['cmd', '/c', 'gradlew.bat ' + baseCommand]
+   } else {
+      commandLine = ['sh', 'gradlew ' + baseCommand]
    }
 }
