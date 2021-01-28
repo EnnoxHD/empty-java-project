@@ -1,50 +1,85 @@
 plugins {
-   id 'java'
-   id 'application'
-//   id 'org.openjfx.javafxplugin' version '0.0.9'
-//   id 'java-library'
+	id 'java'
+	id 'application'
+//	id 'org.openjfx.javafxplugin' version '0.0.9'
+//	id 'java-library'
 }
 
 java {
-   modularity.inferModulePath = true
-   toolchain {
-      languageVersion = JavaLanguageVersion.of(15)
-   }
+	modularity.inferModulePath = true
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(15)
+	}
+	withJavadocJar()
+	withSourcesJar()
+}
+
+javadoc {
+	options {
+		memberLevel = JavadocMemberLevel.PRIVATE
+	}
 }
 
 application {
-   mainModule = 'com.github.ennoxhd.empty.java'
-   mainClass  = 'com.github.ennoxhd.empty.java.app.EmptyJavaProject'
+	mainModule = 'com.github.ennoxhd.empty.java'
+	mainClass  = 'com.github.ennoxhd.empty.java.app.EmptyJavaProject'
 }
 
 //javafx {
-//    version = '15'
-//    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+//	version = '15'
+//	modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
 //}
 
 run {
-//   standardInput = System.in
+//	standardInput = System.in
 }
 
 repositories {
-//   mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-//   implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+//	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+
+//	JavaFX
+//	------
+//	def group = 'org.openjfx'
+//	def version = '15.0.1'
+//	def fxModules = List.of('javafx-base','javafx-controls','javafx-fxml','javafx-graphics')
+//	
+//	def osName = System.getProperty('os.name').toLowerCase()
+//	def platform = 'mac'
+//	if (osName.contains('windows')) {
+//		platform = 'win'
+//	}
+//	if (osName.contains('linux')) {
+//		platform = 'linux'
+//	}
+//	fxModules.forEach {
+//		implementation("$group:$it:$version:$platform")
+//	}
 }
 
 task debug (type: Exec) {
-   group = 'application'
-   description = 'Runs this project as a JVM application with debugging enabled (add program arguments with -Pargs="...")'
+	group = 'application'
+	description = 'Runs this project as a JVM application with debugging enabled (add program arguments with -Pargs="...")'
 
-   def baseCommand = 'run --debug-jvm'
-   if(project.hasProperty('args')) {
-      baseCommand += ' --args="' + project.getProperty('args') + '"'
-   }
-   if (System.properties['os.name'].toLowerCase().contains('windows')) {
-      commandLine = ['cmd', '/c', 'gradlew.bat ' + baseCommand]
-   } else {
-      commandLine = ['sh', 'gradlew ' + baseCommand]
-   }
+	def baseCommand = 'run --debug-jvm'
+	if(project.hasProperty('args')) {
+		baseCommand += ' --args="' + project.getProperty('args') + '"'
+	}
+	if (System.properties['os.name'].toLowerCase().contains('windows')) {
+		commandLine = ['cmd', '/c', 'gradlew.bat ' + baseCommand]
+	} else {
+		commandLine = ['sh', 'gradlew ' + baseCommand]
+	}
+}
+
+task showJavadoc(dependsOn: javadoc) {
+	group = 'documentation'
+	description = 'Shows the generated Javadoc API documentation in the default browser.'
+	
+	doLast {
+		java.awt.Desktop.getDesktop().browse(project.file("./build/docs/javadoc/index.html").toURI())
+	}
 }
