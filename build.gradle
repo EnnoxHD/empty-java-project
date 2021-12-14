@@ -1,7 +1,6 @@
 plugins {
 	id 'java'
 	id 'application'
-//	id 'org.openjfx.javafxplugin' version '0.0.9'
 //	id 'java-library'
 }
 
@@ -24,11 +23,6 @@ application {
 	mainModule = 'com.github.ennoxhd.empty.java'
 	mainClass  = 'com.github.ennoxhd.empty.java.app.EmptyJavaProject'
 }
-
-//javafx {
-//	version = '15'
-//	modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
-//}
 
 run {
 //	standardInput = System.in
