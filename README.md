@@ -1,2 +1,2 @@
 # empty-java-project
-Empty java project with gradle wrapper and standard configuration.
+Empty Eclipse Java project with Gradle wrapper and some standard configuration.
