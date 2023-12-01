@@ -7,7 +7,7 @@ plugins {
 java {
 	//modularity.inferModulePath = false
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(19)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 	withJavadocJar()
 	withSourcesJar()
@@ -38,7 +38,7 @@ dependencies {
 //	JavaFX
 //	------
 //	def group = 'org.openjfx'
-//	def version = '19'
+//	def version = '21.0.1'
 //	def fxModules = List.of('javafx-base','javafx-controls','javafx-fxml','javafx-graphics')
 //	
 //	def osName = System.getProperty('os.name').toLowerCase()
