@@ -3,5 +3,6 @@
 bin
 build
 #.classpath
-#.project
 #.factorypath
+#.project
+
