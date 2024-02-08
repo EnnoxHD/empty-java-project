@@ -256,6 +256,7 @@ sp_cleanup.remove_unused_private_fields=false
 sp_cleanup.remove_unused_private_members=false
 sp_cleanup.remove_unused_private_methods=false
 sp_cleanup.remove_unused_private_types=false
+sp_cleanup.replace_deprecated_calls=false
 sp_cleanup.return_expression=true
 sp_cleanup.simplify_lambda_expression_and_method_ref=true
 sp_cleanup.single_used_field=true
