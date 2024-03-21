@@ -1,0 +1,30 @@
+apply plugin: 'eclipse'
+
+eclipse {
+    classpath {
+        containers = [
+        	'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/',
+        	'org.eclipse.buildship.core.gradleclasspathcontainer'
+        ]
+        defaultOutputDir = file('bin/default')
+        file.whenMerged {
+        	entries.find {
+        		it.kind == 'src' && it.path == 'src/main/java'
+        	}.each {
+        		it.output = 'build/classes/java/main'
+        	}
+        	
+        	entries.find {
+        		it.kind == 'con' && it.path == 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/'
+        	}.each {
+        		it.entryAttributes['module'] = 'true'
+        	}
+        }
+    }
+	jdt {
+    
+	}
+	project {
+	    
+	}
+}

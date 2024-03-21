@@ -4,6 +4,8 @@ plugins {
 //	id 'java-library'
 }
 
+apply from: 'gradle/eclipse.gradle'
+
 java {
 	//modularity.inferModulePath = false
 	toolchain {
