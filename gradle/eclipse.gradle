@@ -595,3 +595,16 @@ eclipse {
 	    
 	}
 }
+
+eclipseJdt {
+	doLast {
+		def prefsFile = file('.settings/org.eclipse.jdt.core.prefs')
+		def lines = prefsFile.readLines()
+		prefsFile.delete()
+		prefsFile.withWriter { out ->
+			lines.stream().skip(2).toList().each {
+				out.println it
+			}
+		}
+	}
+}
