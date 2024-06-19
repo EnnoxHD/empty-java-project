@@ -10,17 +10,47 @@ eclipse {
 			'org.eclipse.buildship.core.gradleclasspathcontainer'
 		]
 		defaultOutputDir = file('bin/default')
-		file.whenMerged {
-			entries.find {
-				it.kind == 'src' && it.path == 'src/main/java'
-			}.each {
-				it.output = 'build/classes/java/main'
+		file {
+			whenMerged {
+				entries.find {
+					it.kind == 'src' && it.path == 'src/main/java'
+				}.each {
+					it.output = 'build/classes/java/main'
+				}
+				
+				entries.find {
+					it.kind == 'con' && it.path == 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/'
+				}.each {
+					it.entryAttributes['module'] = 'true'
+				}
 			}
-			
-			entries.find {
-				it.kind == 'con' && it.path == 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/'
-			}.each {
-				it.entryAttributes['module'] = 'true'
+			withXml {
+				def root = it.asNode()
+				
+				// reorder tags
+				def kindSorting = [
+					'src',
+					'con',
+					'output'
+				]
+				def classpathContainers = eclipse.classpath.containers as List
+				root.children().sort((a, b) -> {
+					def containsA = kindSorting.contains(a.attributes()['kind'])
+					def containsB = kindSorting.contains(b.attributes()['kind'])
+					if(containsA && containsB) {
+						if(a.attributes()['kind'] == b.attributes()['kind'] && a.attributes()['kind'] == 'con') {
+							return classpathContainers.indexOf(a.attributes()['path'])
+									- classpathContainers.indexOf(b.attributes()['path'])
+						}
+						return kindSorting.indexOf(a.attributes()['kind']) - kindSorting.indexOf(b.attributes()['kind'])
+					} else if(containsA) {
+						return -1
+					} else if(containsB) {
+						return 1
+					} else {
+						return 0
+					}
+				})
 			}
 		}
 	}
