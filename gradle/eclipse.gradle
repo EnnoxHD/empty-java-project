@@ -1,6 +1,5 @@
 import java.util.regex.Pattern
 import org.gradle.plugins.ide.eclipse.model.BuildCommand
-import org.gradle.plugins.ide.eclipse.model.Project
 
 apply plugin: 'eclipse'
 
@@ -605,6 +604,34 @@ eclipse {
 			new BuildCommand('org.eclipse.jdt.core.javabuilder'),
 			new BuildCommand('org.eclipse.buildship.core.gradleprojectbuilder')
 		]
+		file {
+			withXml {
+				// reorder tags (especially 'natures')
+				def root = it.asNode()
+				def sorting = [
+					'name',
+					'comment',
+					'projects',
+					'buildSpec',
+					'natures',
+					'linkedResources',
+					'filteredResources'
+				]
+				root.children().sort((a, b) -> {
+					def containsA = sorting.contains(a.name())
+					def containsB = sorting.contains(b.name())
+					if(containsA && containsB) {
+						return sorting.indexOf(a.name()) - sorting.indexOf(b.name())
+					} else if(containsA) {
+						return -1
+					} else if(containsB) {
+						return 1
+					} else {
+						return 0
+					}
+				})
+			}
+		}
 	}
 }
 
@@ -623,19 +650,23 @@ eclipseJdt {
 
 eclipseProject {
 	doLast {
-		def projectFile = file(Project.PROJECT_FILE_NAME)
+		def projectFile = file('.project')
 		def lines = projectFile.readLines()
 		projectFile.delete()
+		
+		// delete some tags
 		def actualLines = lines.stream()
 				.filter(line -> !line.matches('^\\s*<linkedResources/>$'))
 				.filter(line -> !line.matches('^\\s*<filteredResources/>$'))
 				.toList()
+		
+		// expand self closing tags
 		def whitespaceGroup = 'whitespace'
 		def tagGroup = 'tag'
-		def pattern = Pattern.compile("^(?<${whitespaceGroup}>\\s*)<(?<${tagGroup}>[A-Za-z]+)/>\$")
+		def selfClosingTagPattern = Pattern.compile("^(?<${whitespaceGroup}>\\s*)<(?<${tagGroup}>[A-Za-z]+)/>\$")
 		actualLines = actualLines.stream()
 				.map(line -> {
-					def matcher = pattern.matcher(line)
+					def matcher = selfClosingTagPattern.matcher(line)
 					if(!matcher.find()) {
 						return line
 					}
@@ -643,10 +674,11 @@ eclipseProject {
 					def tag = matcher.group(tagGroup)
 					return "${whitespace}<${tag}>\n${whitespace}</${tag}>"
 				}).toList()
+		
+		// write modified project file
 		projectFile.withWriter { out ->
 			actualLines.each {
 				out.println it
-				println(it)
 			}
 		}
 	}
