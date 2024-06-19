@@ -1,3 +1,7 @@
+import java.util.regex.Pattern
+import org.gradle.plugins.ide.eclipse.model.BuildCommand
+import org.gradle.plugins.ide.eclipse.model.Project
+
 apply plugin: 'eclipse'
 
 eclipse {
@@ -592,7 +596,15 @@ eclipse {
 		}
 	}
 	project {
-		
+		comment = "Project ${project.name} created by Buildship."
+		natures = [
+			'org.eclipse.jdt.core.javanature',
+			'org.eclipse.buildship.core.gradleprojectnature'
+		]
+		buildCommands = [
+			new BuildCommand('org.eclipse.jdt.core.javabuilder'),
+			new BuildCommand('org.eclipse.buildship.core.gradleprojectbuilder')
+		]
 	}
 }
 
@@ -604,6 +616,37 @@ eclipseJdt {
 		prefsFile.withWriter { out ->
 			lines.stream().skip(2).toList().each {
 				out.println it
+			}
+		}
+	}
+}
+
+eclipseProject {
+	doLast {
+		def projectFile = file(Project.PROJECT_FILE_NAME)
+		def lines = projectFile.readLines()
+		projectFile.delete()
+		def actualLines = lines.stream()
+				.filter(line -> !line.matches('^\\s*<linkedResources/>$'))
+				.filter(line -> !line.matches('^\\s*<filteredResources/>$'))
+				.toList()
+		def whitespaceGroup = 'whitespace'
+		def tagGroup = 'tag'
+		def pattern = Pattern.compile("^(?<${whitespaceGroup}>\\s*)<(?<${tagGroup}>[A-Za-z]+)/>\$")
+		actualLines = actualLines.stream()
+				.map(line -> {
+					def matcher = pattern.matcher(line)
+					if(!matcher.find()) {
+						return line
+					}
+					def whitespace = matcher.group(whitespaceGroup)
+					def tag = matcher.group(tagGroup)
+					return "${whitespace}<${tag}>\n${whitespace}</${tag}>"
+				}).toList()
+		projectFile.withWriter { out ->
+			actualLines.each {
+				out.println it
+				println(it)
 			}
 		}
 	}
