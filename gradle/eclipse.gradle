@@ -606,16 +606,25 @@ eclipse {
 		]
 		file {
 			withXml {
-				// reorder tags (especially 'natures')
 				def root = it.asNode()
+				
+				// delete tags
+				def tagsToRemove = [
+					'linkedResources',
+					'filteredResources'
+				]
+				def childrenToRemove = root.children().stream()
+						.filter(node -> tagsToRemove.contains(node.name()))
+						.toList()
+				childrenToRemove.each { root.children().remove(it) }
+				
+				// reorder tags (especially 'natures')
 				def sorting = [
 					'name',
 					'comment',
 					'projects',
 					'buildSpec',
-					'natures',
-					'linkedResources',
-					'filteredResources'
+					'natures'
 				]
 				root.children().sort((a, b) -> {
 					def containsA = sorting.contains(a.name())
@@ -654,17 +663,12 @@ eclipseProject {
 		def lines = projectFile.readLines()
 		projectFile.delete()
 		
-		// delete some tags
-		def actualLines = lines.stream()
-				.filter(line -> !line.matches('^\\s*<linkedResources/>$'))
-				.filter(line -> !line.matches('^\\s*<filteredResources/>$'))
-				.toList()
-		
 		// expand self closing tags
 		def whitespaceGroup = 'whitespace'
 		def tagGroup = 'tag'
-		def selfClosingTagPattern = Pattern.compile("^(?<${whitespaceGroup}>\\s*)<(?<${tagGroup}>[A-Za-z]+)/>\$")
-		actualLines = actualLines.stream()
+		def attributesGroup = 'attributes'
+		def selfClosingTagPattern = Pattern.compile("^(?<${whitespaceGroup}>\\s*)<(?<${tagGroup}>[A-Za-z]+)(?<${attributesGroup}>.*)/>\$")
+		def actualLines = lines.stream()
 				.map(line -> {
 					def matcher = selfClosingTagPattern.matcher(line)
 					if(!matcher.find()) {
@@ -672,7 +676,8 @@ eclipseProject {
 					}
 					def whitespace = matcher.group(whitespaceGroup)
 					def tag = matcher.group(tagGroup)
-					return "${whitespace}<${tag}>\n${whitespace}</${tag}>"
+					def attributes = matcher.group(attributesGroup)
+					return "${whitespace}<${tag}${attributes}>\n${whitespace}</${tag}>"
 				}).toList()
 		
 		// write modified project file
