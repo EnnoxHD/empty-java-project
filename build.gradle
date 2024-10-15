@@ -9,7 +9,7 @@ apply from: 'gradle/eclipse.gradle'
 java {
 	//modularity.inferModulePath = false
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(23)
 	}
 	withJavadocJar()
 	withSourcesJar()
@@ -35,12 +35,12 @@ repositories {
 }
 
 dependencies {
-//	implementation 'com.google.code.gson:gson:2.10.1'
+//	implementation 'com.google.code.gson:gson:2.11.0'
 
 //	JavaFX
 //	------
 //	def group = 'org.openjfx'
-//	def version = '21.0.2'
+//	def version = '23'
 //	def fxModules = List.of('javafx-base','javafx-controls','javafx-fxml','javafx-graphics')
 //	
 //	def osName = System.getProperty('os.name').toLowerCase()
