@@ -5,16 +5,15 @@ apply plugin: 'eclipse'
 
 ext {
 	javaVersion = 23
-	jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}"
+	jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}/"
 }
 
 eclipse {
 	classpath {
 		containers = [
-			'org.eclipse.buildship.core.gradleclasspathcontainer',
-			jreContainer.toString()
+			jreContainer.toString(),
+			'org.eclipse.buildship.core.gradleclasspathcontainer'
 		]
-		defaultOutputDir = file('bin/default')
 		file {
 			whenMerged {
 				entries.find {
@@ -24,7 +23,7 @@ eclipse {
 				}
 				
 				entries.find {
-					it.kind == 'con' && it.path == jreContainer
+					it.kind == 'con' && it.path == "${jreContainer}".toString()
 				}.each {
 					it.entryAttributes['module'] = 'true'
 				}
