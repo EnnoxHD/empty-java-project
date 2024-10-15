@@ -3,11 +3,16 @@ import org.gradle.plugins.ide.eclipse.model.BuildCommand
 
 apply plugin: 'eclipse'
 
+ext {
+	javaVersion = 23
+	jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}"
+}
+
 eclipse {
 	classpath {
 		containers = [
-			'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/',
-			'org.eclipse.buildship.core.gradleclasspathcontainer'
+			'org.eclipse.buildship.core.gradleclasspathcontainer',
+			jreContainer.toString()
 		]
 		defaultOutputDir = file('bin/default')
 		file {
@@ -19,7 +24,7 @@ eclipse {
 				}
 				
 				entries.find {
-					it.kind == 'con' && it.path == 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21/'
+					it.kind == 'con' && it.path == jreContainer
 				}.each {
 					it.entryAttributes['module'] = 'true'
 				}
@@ -55,8 +60,8 @@ eclipse {
 		}
 	}
 	jdt {
-		sourceCompatibility = 21
-		targetCompatibility = 21
+		sourceCompatibility = javaVersion
+		targetCompatibility = javaVersion
 		file.withProperties {
 			it['eclipse.preferences.version'] = '1'
 			it['org.eclipse.jdt.core.builder.annotationPath.allLocations'] = 'disabled'
@@ -94,9 +99,9 @@ eclipse {
 			it['org.eclipse.jdt.core.compiler.annotation.resourceanalysis'] = 'disabled'
 			it['org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode'] = 'enabled'
 			it['org.eclipse.jdt.core.compiler.codegen.methodParameters'] = 'generate'
-			it['org.eclipse.jdt.core.compiler.codegen.targetPlatform'] = '21'
+			it['org.eclipse.jdt.core.compiler.codegen.targetPlatform'] = "${javaVersion}".toString()
 			it['org.eclipse.jdt.core.compiler.codegen.unusedLocal'] = 'optimize out'
-			it['org.eclipse.jdt.core.compiler.compliance'] = '21'
+			it['org.eclipse.jdt.core.compiler.compliance'] = "${javaVersion}".toString()
 			it['org.eclipse.jdt.core.compiler.debug.lineNumber'] = 'generate'
 			it['org.eclipse.jdt.core.compiler.debug.localVariable'] = 'generate'
 			it['org.eclipse.jdt.core.compiler.debug.sourceFile'] = 'generate'
