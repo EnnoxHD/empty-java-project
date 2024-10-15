@@ -221,7 +221,7 @@ eclipse {
 			it['org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.processAnnotations'] = 'disabled'
 			it['org.eclipse.jdt.core.compiler.release'] = 'enabled'
-			it['org.eclipse.jdt.core.compiler.source'] = '21'
+			it['org.eclipse.jdt.core.compiler.source'] = "${javaVersion}".toString()
 			it['org.eclipse.jdt.core.compiler.taskCaseSensitive'] = 'enabled'
 			it['org.eclipse.jdt.core.compiler.taskPriorities'] = 'NORMAL,HIGH'
 			it['org.eclipse.jdt.core.compiler.taskTags'] = 'TODO,FIXME'
