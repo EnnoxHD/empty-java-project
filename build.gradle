@@ -40,7 +40,7 @@ dependencies {
 //	JavaFX
 //	------
 //	def group = 'org.openjfx'
-//	def version = '23'
+//	def version = '23.0.1'
 //	def fxModules = List.of('javafx-base','javafx-controls','javafx-fxml','javafx-graphics')
 //	
 //	def osName = System.getProperty('os.name').toLowerCase()
