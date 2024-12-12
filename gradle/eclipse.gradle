@@ -208,6 +208,7 @@ eclipse {
 			it['org.eclipse.jdt.core.compiler.problem.unusedExceptionParameter'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.problem.unusedImport'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.problem.unusedLabel'] = 'warning'
+			it['org.eclipse.jdt.core.compiler.problem.unusedLambdaParameter'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.problem.unusedLocal'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation'] = 'warning'
 			it['org.eclipse.jdt.core.compiler.problem.unusedParameter'] = 'warning'
