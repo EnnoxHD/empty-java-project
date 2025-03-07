@@ -35,13 +35,13 @@ repositories {
 }
 
 dependencies {
-//    implementation 'com.google.code.gson:gson:2.11.0'
-
+//    implementation 'com.google.code.gson:gson:2.12.1'
+//
 //    JavaFX
 //    ------
 //    def group = 'org.openjfx'
-//    def version = '23.0.1'
-//    def fxModules = List.of('javafx-base','javafx-controls','javafx-fxml','javafx-graphics')
+//    def version = '23.0.2'
+//    def fxModules = ['javafx-base','javafx-controls','javafx-fxml','javafx-graphics','javafx-media','javafx-web','javafx-swing']
 //    
 //    def osName = System.getProperty('os.name').toLowerCase()
 //    def platform = 'mac'
@@ -51,7 +51,7 @@ dependencies {
 //    if (osName.contains('linux')) {
 //        platform = 'linux'
 //    }
-//    fxModules.forEach {
+//    fxModules.each {
 //        implementation("$group:$it:$version:$platform")
 //    }
 }
