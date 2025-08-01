@@ -5,7 +5,7 @@ package com.github.ennoxhd.empty.java.app;
  */
 public class EmptyJavaProject {
     /**
-     * Intentionally hidden contructor.
+     * Intentionally hidden constructor.
      */
     private EmptyJavaProject() {
     }
