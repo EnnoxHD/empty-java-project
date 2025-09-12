@@ -99,6 +99,7 @@ cleanup.remove_unused_private_members=false
 cleanup.remove_unused_private_methods=false
 cleanup.remove_unused_private_types=false
 cleanup.replace_deprecated_calls=false
+cleanup.replace_deprecated_fields=false
 cleanup.return_expression=true
 cleanup.simplify_boolean_if_else=true
 cleanup.simplify_lambda_expression_and_method_ref=true
