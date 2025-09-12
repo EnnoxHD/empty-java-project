@@ -3,3 +3,6 @@ plugins {
 }
 
 rootProject.name = 'empty-java-project'
+
+// Gradle 9 recommendation
+enableFeaturePreview "STABLE_CONFIGURATION_CACHE"
