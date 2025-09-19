@@ -4,7 +4,7 @@ import org.gradle.plugins.ide.eclipse.model.BuildCommand
 apply plugin: 'eclipse'
 
 ext {
-    javaVersion = 24
+    javaVersion = 25
     jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}/"
 }
 
