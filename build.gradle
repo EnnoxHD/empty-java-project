@@ -9,7 +9,7 @@ apply from: 'gradle/eclipse.gradle'
 java {
     //modularity.inferModulePath = false
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(25)
     }
     withJavadocJar()
     withSourcesJar()
@@ -40,7 +40,7 @@ dependencies {
 //    JavaFX
 //    ------
 //    def group = 'org.openjfx'
-//    def version = '24.0.2'
+//    def version = '25'
 //    def fxModules = ['javafx-base','javafx-controls','javafx-fxml','javafx-graphics','javafx-media','javafx-web','javafx-swing']
 //    
 //    def osName = System.getProperty('os.name').toLowerCase()
