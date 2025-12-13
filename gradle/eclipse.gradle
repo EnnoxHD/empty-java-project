@@ -5,7 +5,8 @@ apply plugin: 'eclipse'
 
 ext {
     javaVersion = 25
-    jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}/"
+    jreContainer = "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${javaVersion}"
+    jreContainerGen = jreContainer + '/'
 }
 
 eclipse {
@@ -16,21 +17,25 @@ eclipse {
         ]
         file {
             whenMerged {
+                // set Eclipse output path to Gradle output path
                 entries.find {
                     it.kind == 'src' && it.path == 'src/main/java'
                 }.each {
                     it.output = 'build/classes/java/main'
                 }
-                
+                // set JRE container modularity
                 entries.find {
                     it.kind == 'con' && it.path == "${jreContainer}".toString()
                 }.each {
                     it.entryAttributes['module'] = 'true'
                 }
+                // remove false generated JRE container entry
+                entries.removeAll {
+                    it.kind == 'con' && it.path == "${jreContainerGen}".toString()
+                }
             }
             withXml {
                 def root = it.asNode()
-                
                 // reorder tags
                 def kindSorting = [
                     'src',
@@ -140,6 +145,7 @@ eclipse {
             it['org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsNotVisibleRef'] = 'enabled'
             it['org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsVisibility'] = 'private'
             it['org.eclipse.jdt.core.compiler.problem.localVariableHiding'] = 'ignore'
+            it['org.eclipse.jdt.core.compiler.problem.memberOfDeprecatedTypeNotDeprecated']='info'
             it['org.eclipse.jdt.core.compiler.problem.methodWithConstructorName'] = 'warning'
             it['org.eclipse.jdt.core.compiler.problem.missingDefaultCase'] = 'warning'
             it['org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation'] = 'info'
@@ -323,6 +329,7 @@ eclipse {
             it['org.eclipse.jdt.core.formatter.comment.format_html'] = 'true'
             it['org.eclipse.jdt.core.formatter.comment.format_javadoc_comments'] = 'true'
             it['org.eclipse.jdt.core.formatter.comment.format_line_comments'] = 'true'
+            it['org.eclipse.jdt.core.formatter.comment.format_markdown_comments']='true'
             it['org.eclipse.jdt.core.formatter.comment.format_source_code'] = 'true'
             it['org.eclipse.jdt.core.formatter.comment.indent_parameter_description'] = 'false'
             it['org.eclipse.jdt.core.formatter.comment.indent_root_tags'] = 'true'
@@ -642,7 +649,6 @@ eclipse {
         file {
             withXml {
                 def root = it.asNode()
-                
                 // delete tags
                 def tagsToRemove = [
                     'linkedResources',
@@ -652,7 +658,6 @@ eclipse {
                         .filter(node -> tagsToRemove.contains(node.name()))
                         .toList()
                 childrenToRemove.each { root.children().remove(it) }
-                
                 // reorder tags (especially 'natures')
                 def sorting = [
                     'name',
@@ -697,7 +702,6 @@ eclipseProject {
         def projectFile = file('.project')
         def lines = projectFile.readLines()
         projectFile.delete()
-        
         // expand self closing tags
         def whitespaceGroup = 'whitespace'
         def tagGroup = 'tag'
@@ -714,7 +718,6 @@ eclipseProject {
                     def attributes = matcher.group(attributesGroup)
                     return "${whitespace}<${tag}${attributes}>\n${whitespace}</${tag}>"
                 }).toList()
-        
         // write modified project file
         projectFile.withWriter { out ->
             actualLines.each {
