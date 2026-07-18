@@ -66,7 +66,7 @@ eclipse {
     jdt {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-
+        // https://github.com/gradle/gradle/pull/37793
         // Using types related to file generation tasks of IDE plugins (org.gradle.plugins.ide.eclipse.model.EclipseJdt.file).
         // This behavior has been deprecated.
         // This is scheduled to be removed in Gradle 10.
