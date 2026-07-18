@@ -66,6 +66,10 @@ eclipse {
     jdt {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+
+        // Using types related to file generation tasks of IDE plugins (org.gradle.plugins.ide.eclipse.model.EclipseJdt.file).
+        // This behavior has been deprecated.
+        // This is scheduled to be removed in Gradle 10.
         file.withProperties {
             it['eclipse.preferences.version'] = '1'
             it['org.eclipse.jdt.core.builder.annotationPath.allLocations'] = 'disabled'
