@@ -9,7 +9,7 @@ apply from: 'gradle/eclipse.gradle'
 java {
     //modularity.inferModulePath = false
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(26)
     }
     withJavadocJar()
     withSourcesJar()
