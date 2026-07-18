@@ -75,8 +75,10 @@ task showJavadoc(dependsOn: javadoc) {
     group = 'documentation'
     description = 'Shows the generated Javadoc API documentation in the default browser.'
 
+    def javadocIndex = file("./build/docs/javadoc/index.html")
+
     doLast {
-        java.awt.Desktop.getDesktop().browse(file("./build/docs/javadoc/index.html").toURI())
+        java.awt.Desktop.getDesktop().browse(javadocIndex.toURI())
     }
 }
 
@@ -84,8 +86,9 @@ task showGradleProblemsReport() {
     group = 'gradle'
     description = 'Shows the generated Gradle problems report in the default browser.'
 
+    def report = file("./build/reports/problems/problems-report.html")
+
     doLast {
-        def report = file("./build/reports/problems/problems-report.html")
         if (!report.exists()) {
             println('No Gradle problems report available.')
             return
@@ -98,8 +101,9 @@ task deleteGradleProblemsReport() {
     group = 'gradle'
     description = 'Deletes the current Gradle problems report.'
 
+    def report = file("./build/reports/problems/problems-report.html")
+
     doLast {
-        def report = file("./build/reports/problems/problems-report.html")
         if (!report.exists()) return;
         report.delete()
     }
