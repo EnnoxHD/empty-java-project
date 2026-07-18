@@ -613,6 +613,7 @@ eclipse {
             it['org.eclipse.jdt.core.formatter.parentheses_positions_in_switch_statement'] = 'common_lines'
             it['org.eclipse.jdt.core.formatter.parentheses_positions_in_try_clause'] = 'common_lines'
             it['org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line'] = 'true'
+            it['org.eclipse.jdt.core.formatter.put_text_block_quotes_on_new_line'] = 'true'
             it['org.eclipse.jdt.core.formatter.tabulation.char'] = 'space'
             it['org.eclipse.jdt.core.formatter.tabulation.size'] = '4'
             it['org.eclipse.jdt.core.formatter.text_block_indentation'] = '0'
